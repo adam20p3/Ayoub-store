@@ -17,7 +17,19 @@ module.exports = {
     		}
     	},
     	extend: {
+    		fontFamily: {
+    			serif: ['var(--font-cormorant)', 'Cormorant Garamond', 'Georgia', 'serif'],
+    			sans: ['var(--font-dm-sans)', 'DM Sans', 'system-ui', 'sans-serif'],
+    			display: ['var(--font-cormorant)', 'Cormorant Garamond', 'Georgia', 'serif'],
+    		},
     		colors: {
+    			cream: '#FAF6EF',
+    			sand: '#EFE7DA',
+    			bone: '#E8DFCE',
+    			taupe: '#A38C71',
+    			cognac: '#8B6A48',
+    			ink: '#15110D',
+    			charcoal: '#2A241E',
     			border: 'hsl(var(--border))',
     			input: 'hsl(var(--input))',
     			ring: 'hsl(var(--ring))',
