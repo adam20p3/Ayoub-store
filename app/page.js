@@ -4,6 +4,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { getProducts, getCategories, initializeSampleData } from '@/lib/products';
 import { logInquiry } from '@/lib/inquiries';
+import { fmtMAD, fmtMADPlain } from '@/lib/currency';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, Instagram, Menu } from 'lucide-react';
@@ -25,7 +26,7 @@ const WHATSAPP_NUMBER =
 
 const buildWhatsAppLink = (product) => {
   const mainImage = product.images?.[0] || '';
-  const price = `$${Number(product.price).toFixed(2)}`;
+  const price = fmtMADPlain(product.price);
 
   // Structured message — line breaks render in WhatsApp; the bare image
   // URL on its own line generates a rich image preview on the recipient's
@@ -99,7 +100,7 @@ const ProductCard = ({ product, onOpen }) => {
           </h3>
         </div>
         <div className="shrink-0 font-sans text-sm tracking-wide text-ink">
-          ${Number(product.price).toFixed(2)}
+          {fmtMAD(product.price)}
         </div>
       </div>
     </button>
@@ -202,7 +203,7 @@ const ProductDetailModal = ({ product, open, onClose }) => {
 
             <div className="mt-8 flex items-baseline gap-3">
               <span className="font-serif text-3xl text-ink">
-                ${Number(product.price).toFixed(2)}
+                {fmtMAD(product.price)}
               </span>
               {!product.inStock && (
                 <span className="font-sans text-[11px] uppercase tracking-[0.22em] text-cognac">

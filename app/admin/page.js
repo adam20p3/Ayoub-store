@@ -9,6 +9,7 @@ import {
   deleteProduct,
   initializeSampleData,
 } from '@/lib/products';
+import { fmtMAD } from '@/lib/currency';
 import { AdminShell } from '@/components/admin-shell';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -253,7 +254,7 @@ const ProductsManager = () => {
                         </Badge>
                       </td>
                       <td className="px-5 py-3 text-right font-medium text-slate-900 tabular-nums">
-                        ${Number(p.price).toFixed(2)}
+                        {fmtMAD(p.price)}
                       </td>
                       <td className="px-5 py-3">
                         {p.inStock ? (
@@ -321,13 +322,13 @@ const ProductsManager = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="price">Price (USD) <span className="text-rose-500">*</span></Label>
+                  <Label htmlFor="price">Price (MAD) <span className="text-rose-500">*</span></Label>
                   <Input
                     id="price"
                     type="number"
                     step="0.01"
                     min="0"
-                    placeholder="99.99"
+                    placeholder="1299.00"
                     value={formData.price}
                     onChange={(e) => handleInputChange('price', e.target.value)}
                   />

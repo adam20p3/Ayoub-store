@@ -16,15 +16,12 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { fmtMAD } from '@/lib/currency';
 
 // ─────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────
-const fmtMoney = (n) =>
-  `$${Number(n || 0).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+const fmtMoney = (n) => fmtMAD(n);
 
 // Returns a Tailwind-friendly background color based on rank.
 // Darker → hotter (most popular category).

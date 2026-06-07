@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Trash2, MessageSquare, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { fmtMAD } from '@/lib/currency';
 
 // ─────────────────────────────────────────────────────────────
 // Status pill styling
@@ -230,7 +231,7 @@ const InquiriesManager = () => {
                         )}
                       </td>
                       <td className="px-5 py-3 text-right font-medium text-slate-900 tabular-nums">
-                        ${Number(row.productPrice).toFixed(2)}
+                        {fmtMAD(row.productPrice)}
                       </td>
                       <td className="px-5 py-3 text-slate-600 whitespace-nowrap text-xs">
                         {formatDate(row.timestamp)}
