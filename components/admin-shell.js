@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Toaster } from '@/components/ui/sonner';
-import { Lock, Home, LogOut, Package, MessageSquare } from 'lucide-react';
+import { Lock, Home, LogOut, Package, MessageSquare, BarChart3 } from 'lucide-react';
 
 const SESSION_KEY = 'bag_store_admin_auth';
 const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123';
@@ -97,6 +97,7 @@ const AdminHeader = ({ onLogout, titleSlot }) => {
   const tabs = [
     { href: '/admin',            label: 'Products',  icon: Package },
     { href: '/admin/inquiries',  label: 'Inquiries', icon: MessageSquare },
+    { href: '/admin/analytics',  label: 'Analytics', icon: BarChart3 },
   ];
 
   return (
