@@ -17,12 +17,27 @@ const HERO_SUBTEXT =
   'A curated edit of handcrafted leather goods — made slowly, in small ateliers, for a lifetime of wear.';
 const HERO_IMAGE =
   'https://images.unsplash.com/photo-1603219527847-24c87f552a77?w=1920&q=85';
-const WHATSAPP_NUMBER = '15551234567'; // ⚠️ Replace with your full international number (no +, no spaces)
+const WHATSAPP_NUMBER =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '15551234567'; // configurable via .env
 
 const buildWhatsAppLink = (product) => {
-  const text = `Hi, I'm interested in buying: ${product.name} — $${Number(
-    product.price
-  ).toFixed(2)}`;
+  const mainImage = product.images?.[0] || '';
+  const price = `$${Number(product.price).toFixed(2)}`;
+
+  // Structured message — line breaks render in WhatsApp; the bare image
+  // URL on its own line generates a rich image preview on the recipient's
+  // phone so the operator can instantly see the exact product.
+  const text = [
+    `${STORE_NAME} - New Order Inquiry`,
+    `----------------------------------`,
+    `Product: ${product.name}`,
+    `Category: ${product.category || '—'}`,
+    `Price: ${price}`,
+    `Reference Image: ${mainImage}`,
+    ``,
+    `Please let me know the delivery availability for this item.`,
+  ].join('\n');
+
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 };
 
@@ -33,6 +48,22 @@ const WhatsAppIcon = ({ className = 'h-5 w-5' }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.967-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.057 21.785c-1.835 0-3.638-.494-5.214-1.428l-.373-.222-3.873 1.016 1.034-3.776-.244-.39A9.86 9.86 0 0 1 2.187 11.9c0-5.443 4.427-9.87 9.87-9.87 2.637 0 5.114 1.027 6.98 2.892a9.821 9.821 0 0 1 2.892 6.984c-.003 5.443-4.43 9.879-9.872 9.879zm8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.336 11.893-11.893a11.82 11.82 0 0 0-3.473-8.413z" />
   </svg>
+);
+
+// ─────────────────────────────────────────────────────────────
+// Loading skeleton (shown while localStorage is being read)
+// ─────────────────────────────────────────────────────────────
+const ProductSkeleton = () => (
+  <div className="animate-pulse">
+    <div className="aspect-[4/5] w-full bg-bone" />
+    <div className="mt-5 flex items-start justify-between gap-4">
+      <div className="min-w-0 flex-1 space-y-2">
+        <div className="h-2 w-16 bg-bone rounded" />
+        <div className="h-4 w-3/4 bg-bone rounded" />
+      </div>
+      <div className="h-4 w-12 bg-bone rounded shrink-0" />
+    </div>
+  </div>
 );
 
 // ─────────────────────────────────────────────────────────────
