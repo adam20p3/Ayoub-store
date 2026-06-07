@@ -316,9 +316,17 @@ const Navbar = () => {
       <div className="container flex h-16 md:h-20 items-center justify-between gap-4">
         <Link
           href="#top"
-          className="font-serif text-xl md:text-2xl tracking-[0.18em] text-ink whitespace-nowrap"
+          aria-label={STORE_NAME}
+          className="flex items-center gap-3 whitespace-nowrap"
         >
-          {STORE_NAME.toUpperCase()}
+          <img
+            src="/logo.jpg"
+            alt={STORE_NAME}
+            className="h-10 md:h-12 w-auto rounded-full ring-1 ring-bone/60 object-cover"
+          />
+          <span className="hidden sm:inline font-serif text-lg md:text-xl tracking-[0.18em] text-ink">
+            {STORE_NAME.toUpperCase()}
+          </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-9">
@@ -516,10 +524,17 @@ const Storefront = () => {
       <footer className="border-t border-bone bg-cream">
         <div className="container py-16 grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-6">
           <div>
-            <p className="font-serif text-2xl tracking-[0.15em] text-ink">
-              {STORE_NAME.toUpperCase()}
-            </p>
-            <p className="mt-3 font-sans text-sm text-taupe leading-relaxed max-w-xs">
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.jpg"
+                alt={STORE_NAME}
+                className="h-14 w-14 rounded-full ring-1 ring-bone object-cover"
+              />
+              <p className="font-serif text-2xl tracking-[0.15em] text-ink">
+                {STORE_NAME.toUpperCase()}
+              </p>
+            </div>
+            <p className="mt-4 font-sans text-sm text-taupe leading-relaxed max-w-xs">
               {t.footer.tagline}
             </p>
           </div>
