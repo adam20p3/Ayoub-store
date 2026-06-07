@@ -6,7 +6,7 @@ import { getProducts, getCategories, initializeSampleData } from '@/lib/products
 import { logInquiry } from '@/lib/inquiries';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, X, Instagram } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, Instagram, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { DeliveryInquiryWidget } from '@/components/delivery-inquiry-widget';
 
@@ -256,6 +256,117 @@ const ProductDetailModal = ({ product, open, onClose }) => {
 };
 
 // ─────────────────────────────────────────────────────────────
+// Sticky Navbar with bilingual section anchors
+// ─────────────────────────────────────────────────────────────
+const NAV_LINKS = [
+  { href: '#top',        fr: 'Accueil',    ar: 'الرئيسية' },
+  { href: '#collection', fr: 'Collection', ar: 'تشكيلة'   },
+];
+
+const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Close mobile menu when an anchor is clicked
+  const handleLinkClick = () => setMobileOpen(false);
+
+  return (
+    <header
+      className={`sticky top-0 z-40 transition-all duration-300 border-b ${
+        scrolled
+          ? 'bg-cream/95 backdrop-blur-md border-bone shadow-[0_1px_0_rgba(0,0,0,0.02)]'
+          : 'bg-cream/80 backdrop-blur supports-[backdrop-filter]:bg-cream/70 border-transparent'
+      }`}
+    >
+      <div className="container flex h-16 md:h-20 items-center justify-between gap-4">
+        {/* Logo — left */}
+        <Link
+          href="#top"
+          className="font-serif text-xl md:text-2xl tracking-[0.18em] text-ink whitespace-nowrap"
+        >
+          {STORE_NAME.toUpperCase()}
+        </Link>
+
+        {/* Desktop links — right */}
+        <nav className="hidden md:flex items-center gap-10">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="group font-sans text-[11px] uppercase tracking-[0.28em] text-ink/70 hover:text-ink transition-colors"
+            >
+              <span className="inline-flex items-baseline gap-2">
+                <span>{l.fr}</span>
+                <span className="text-taupe/70 group-hover:text-taupe transition-colors font-serif text-sm normal-case tracking-normal" dir="rtl">
+                  / {l.ar}
+                </span>
+              </span>
+            </a>
+          ))}
+          <Link
+            href="/admin"
+            className="font-sans text-[10px] uppercase tracking-[0.28em] text-taupe hover:text-ink transition-colors"
+          >
+            Atelier
+          </Link>
+        </nav>
+
+        {/* Mobile menu trigger */}
+        <button
+          type="button"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+          className="md:hidden h-10 w-10 -mr-2 flex items-center justify-center text-ink rounded-full hover:bg-bone/60 transition-colors"
+        >
+          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {/* Mobile panel */}
+      <div
+        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out ${
+          mobileOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <nav className="container pb-6 pt-2 flex flex-col gap-1 border-t border-bone">
+          {NAV_LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              onClick={handleLinkClick}
+              className="flex items-baseline justify-between px-1 py-3 border-b border-bone/60 last:border-b-0"
+            >
+              <span className="font-sans text-[12px] uppercase tracking-[0.28em] text-ink">
+                {l.fr}
+              </span>
+              <span className="font-serif text-base text-taupe" dir="rtl">
+                {l.ar}
+              </span>
+            </a>
+          ))}
+          <Link
+            href="/admin"
+            onClick={handleLinkClick}
+            className="mt-3 self-start font-sans text-[10px] uppercase tracking-[0.28em] text-taupe hover:text-ink"
+          >
+            Atelier →
+          </Link>
+        </nav>
+      </div>
+    </header>
+  );
+};
+
+
+// ─────────────────────────────────────────────────────────────
 // Page
 // ─────────────────────────────────────────────────────────────
 const Home = () => {
@@ -288,26 +399,14 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-cream text-ink font-sans">
-      {/* ── Navbar ────────────────────────────────────────── */}
-      <header className="sticky top-0 z-30 bg-cream/85 backdrop-blur supports-[backdrop-filter]:bg-cream/70 border-b border-bone">
-        <div className="container flex h-16 md:h-20 items-center justify-between">
-          <div className="w-24" />
-          <Link href="/" className="font-serif text-2xl md:text-3xl tracking-[0.15em] text-ink">
-            {STORE_NAME.toUpperCase()}
-          </Link>
-          <div className="w-24 flex justify-end">
-            <Link
-              href="/admin"
-              className="hidden md:inline-block font-sans text-[10px] uppercase tracking-[0.28em] text-taupe hover:text-ink transition-colors"
-            >
-              Atelier
-            </Link>
-          </div>
-        </div>
-      </header>
+      {/* ── Sticky Navbar ──────────────────────────────────── */}
+      <Navbar />
 
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="relative h-[88vh] min-h-[600px] w-full overflow-hidden">
+      <section
+        id="top"
+        className="relative h-[88vh] min-h-[600px] w-full overflow-hidden scroll-mt-20"
+      >
         <img
           src={HERO_IMAGE}
           alt=""
@@ -351,7 +450,7 @@ const Home = () => {
       </section>
 
       {/* ── Category filter ───────────────────────────────── */}
-      <section id="collection" className="container">
+      <section id="collection" className="container scroll-mt-24">
         <div className="border-t border-bone pt-10 pb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <p className="font-sans text-[10px] uppercase tracking-[0.32em] text-taupe">
