@@ -8,6 +8,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, Instagram } from 'lucide-react';
 import Link from 'next/link';
+import { DeliveryInquiryWidget } from '@/components/delivery-inquiry-widget';
 
 // ─────────────────────────────────────────────────────────────
 // Configuration — update these to match your boutique
@@ -476,6 +477,9 @@ const Home = () => {
         open={!!selected}
         onClose={() => setSelected(null)}
       />
+
+      {/* Floating delivery inquiry widget */}
+      <DeliveryInquiryWidget />
     </div>
   );
 };
