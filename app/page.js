@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
 import { useState, useEffect, useMemo } from 'react';
 import { getProducts, getCategories, initializeSampleData } from '@/lib/products';
+import { logInquiry } from '@/lib/inquiries';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight, X, Instagram } from 'lucide-react';
@@ -212,6 +214,15 @@ const ProductDetailModal = ({ product, open, onClose }) => {
               href={buildWhatsAppLink(product)}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() =>
+                logInquiry({
+                  productId: product.id,
+                  productName: product.name,
+                  productPrice: product.price,
+                  productCategory: product.category,
+                  imageUrl: product.images?.[0] || '',
+                })
+              }
               className="mt-10 group inline-flex items-center justify-center gap-3 bg-ink text-cream hover:bg-charcoal transition-colors px-8 py-5 font-sans text-[12px] uppercase tracking-[0.28em]"
             >
               <WhatsAppIcon className="h-4 w-4" />
